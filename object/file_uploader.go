@@ -1,6 +1,8 @@
 package object
 
-import "sync"
+import (
+	"sync"
+)
 
 type Uploader struct {
 	ClientFileMetadata                // 文件元数据

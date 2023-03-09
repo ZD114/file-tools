@@ -2,6 +2,8 @@ package object
 
 import "time"
 
+const SmallFileSize = 1024 * 1024 // 小文件大小
+
 // FilePart 文件分片结构
 type FilePart struct {
 	Fid   string // 操作文件ID，随机生成的UUID
