@@ -50,6 +50,7 @@ func uploadFile(file *multipart.FileHeader, c *gin.Context) {
 
 	} else { // 大文件，进行切片上传
 
+		err = object.SliceUpload(file)
 	}
 
 	//断点续传标志

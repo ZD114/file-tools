@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"mime/multipart"
 	"os"
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 )
 
 type Uploader struct {
@@ -74,9 +76,9 @@ func BreakPointTrans(filePath string) error {
 		fmt.Println("已经复制了", total, "字节数据")
 
 		//模拟断电
-		if total > 5000 {
-			panic("断电啦")
-		}
+		//if total > 5000 {
+		//	panic("我断电啦，重新运行")
+		//}
 	}
 
 	return err
@@ -86,4 +88,45 @@ func HandelError(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func SliceUpload(filePath *multipart.FileHeader) error {
+	distFile := fmt.Sprintf("./files/%s", filePath.Filename)
+
+	file, err := filePath.Open()
+	if err != nil {
+		fmt.Println(nil)
+	}
+
+	size := filePath.Size
+	count := size / SmallFileSize
+	tempCount := size % SmallFileSize
+
+	if tempCount > 0 {
+		count += 1
+	}
+
+	fmt.Printf("文件总大小：%v, 分片数：%v\n", size, count)
+
+	desF, err := os.OpenFile(distFile, os.O_CREATE|os.O_RDWR, os.ModePerm)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for i := 0; i < int(count); i++ {
+		go func(vs int) {
+			//申明一个byte
+			b := make([]byte, SmallFileSize)
+			//从指定位置开始读
+			file.ReadAt(b, int64(vs)*SmallFileSize)
+			//从指定位置开始写
+			desF.WriteAt(b, int64(vs)*SmallFileSize)
+		}(i)
+	}
+
+	time.Sleep(time.Second * 5)
+	defer desF.Close()
+	defer file.Close()
+
+	return nil
 }
