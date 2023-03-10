@@ -33,9 +33,9 @@ func uploadFile(file *multipart.FileHeader, c *gin.Context) {
 
 	// 获取文件大小，如果小于等于1M则整个文件上传，否则采用分片方式上传
 	filesize := file.Size
+	dst := fmt.Sprintf("./files/%s", file.Filename)
 
 	if filesize <= object.SmallFileSize { // 小文件
-		dst := fmt.Sprintf("./files/%s", file.Filename)
 
 		// 如果 path 路径不存在，会有 err，然后通过 IsNotExist 判定文件路径是否存在，如果 true 则不存在，注意用 os.ModePerm 这样文件是可以写入的
 		if _, err := os.Stat("./files"); os.IsNotExist(err) {
@@ -50,6 +50,17 @@ func uploadFile(file *multipart.FileHeader, c *gin.Context) {
 
 	} else { // 大文件，进行切片上传
 
+	}
+
+	//断点续传标志
+	var rangeExt = c.GetHeader("Range")
+
+	if rangeExt != "" {
+		//断点续传
+		err = object.BreakPointTrans(dst)
+		if err != nil {
+			return
+		}
 	}
 
 	if err != nil {

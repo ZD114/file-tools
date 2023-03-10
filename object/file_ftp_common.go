@@ -42,3 +42,13 @@ type FileInfo struct {
 type ListFileInfos struct {
 	Files []FileInfo
 }
+
+// FileMetadata 文件片元数据
+type FileMetadata struct {
+	Fid        string    // 操作文件ID，随机生成的UUID
+	Filesize   int64     // 文件大小（字节单位）
+	Filename   string    // 文件名称
+	SliceNum   int       // 切片数量
+	Md5sum     string    // 文件md5值
+	ModifyTime time.Time // 文件修改时间
+}

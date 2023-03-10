@@ -1,15 +1,14 @@
 package util
 
 import (
-	"fmt"
 	"os"
 )
 
-// GetFileSize 获取文件大小
-func GetFileSize(path string) int64 {
-	fh, err := os.Stat(path)
+// IsFile 判断所给文件是否存在
+func IsFile(path string) bool {
+	s, err := os.Stat(path)
 	if err != nil {
-		fmt.Printf("读取文件%s失败, err: %s\n", path, err)
+		return false
 	}
-	return fh.Size()
+	return !s.IsDir()
 }
