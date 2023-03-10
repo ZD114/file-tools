@@ -11,8 +11,30 @@ const (
 )
 
 type SpringConfiguration struct {
+	Spring  SpringProperties  `yaml:"spring"`
 	Server  ServerProperties  `yaml:"server"`
 	Logging LoggingProperties `yaml:"logging"`
+}
+
+type SpringProperties struct {
+	Application ApplicationProperties           `yaml:"application"`
+	Profiles    ProfilesProperties              `yaml:"profiles"`
+	Datasource  map[string]DatasourceProperties `yaml:"datasource"`
+}
+
+type ApplicationProperties struct {
+	Name string `yaml:"name"`
+}
+
+type ProfilesProperties struct {
+	Active string `yaml:"active"`
+}
+
+type DatasourceProperties struct {
+	Url             string `yaml:"url"`
+	MaxIdleConn     int    `yaml:"maxIdleConn"`
+	MaxOpenConn     int    `yaml:"maxOpenConn"`
+	ConnMaxLifetime int    `yaml:"connMaxLifetime"`
 }
 
 type ServerProperties struct {

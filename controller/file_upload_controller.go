@@ -13,6 +13,7 @@ import (
 // 定义全局变量
 var globalWait sync.WaitGroup // 等待多个文件上传或下载完
 
+// UploadFiles 上传多个文件
 func UploadFiles(c *gin.Context) {
 	form, _ := c.MultipartForm()
 

@@ -3,8 +3,12 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	_ "github.com/go-sql-driver/mysql"
+
 	"zhangda/file-tools/config"
 	"zhangda/file-tools/router"
+	"zhangda/file-tools/util"
 )
 
 func main() {
@@ -18,6 +22,6 @@ func main() {
 	}
 
 	if err := s.ListenAndServe(); err != nil {
-		return
+		util.Logger.Error("服务器启动异常", util.Any("serverError", err))
 	}
 }
