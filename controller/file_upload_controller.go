@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"mime/multipart"
 	"os"
 	"sync"
@@ -65,6 +66,6 @@ func uploadFile(file *multipart.FileHeader, c *gin.Context) {
 	}
 
 	if err != nil {
-		fmt.Printf("上传%s文件失败\n", file.Filename)
+		log.Printf("上传%s文件失败", file.Filename)
 	}
 }

@@ -59,7 +59,7 @@ func BreakPointTrans(filePath string) error {
 		n2, err = file1.Read(data)
 
 		if err == io.EOF || n2 == 0 {
-			fmt.Println("文件复制完毕:", total)
+			log.Println("文件复制完毕:", total)
 			file3.Close()
 			//一旦复制完，就删除临时文件
 			os.Remove(tempFile)
@@ -73,7 +73,7 @@ func BreakPointTrans(filePath string) error {
 		file3.Seek(0, io.SeekStart)
 		file3.WriteString(strconv.Itoa(total))
 
-		fmt.Println("已经复制了", total, "字节数据")
+		log.Printf("已经复制了%d字节数据", total)
 
 		//模拟断电
 		//if total > 5000 {
@@ -106,7 +106,7 @@ func SliceUpload(filePath *multipart.FileHeader) error {
 		count += 1
 	}
 
-	fmt.Printf("文件总大小：%v, 分片数：%v\n", size, count)
+	log.Printf("文件总大小：%d，分片数：%d", size, count)
 
 	desF, err := os.OpenFile(distFile, os.O_CREATE|os.O_RDWR, os.ModePerm)
 	if err != nil {
