@@ -1,11 +1,11 @@
 spring:
   application:
-    name: code-packet-service
+    name: file-tools
 
   profiles:
     active: development-local
   datasource:
-    code-packet:
+    file-tools:
       url: "root:root@tcp(127.0.0.1:3306)/file_manager?loc=Local&parseTime=true&maxAllowedPacket=104857599"
       maxIdleConn: 10
       maxOpenConn: 10

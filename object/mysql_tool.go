@@ -22,6 +22,6 @@ func init() {
 	}
 }
 
-func GetCodePacketDB() *xorm.Engine {
-	return _dbs["code-packet"]
+func GetFileInfoDB() *xorm.Engine {
+	return _dbs["file-tools"]
 }

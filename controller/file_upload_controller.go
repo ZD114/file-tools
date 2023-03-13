@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"mime/multipart"
+	"net/http"
 	"os"
 	"sync"
 	"zhangda/file-tools/object"
@@ -47,7 +48,7 @@ func uploadFile(file *multipart.FileHeader, c *gin.Context) {
 
 		err = c.SaveUploadedFile(file, dst)
 		if err != nil {
-			return
+			c.JSON(http.StatusInternalServerError, object.FailMsg(err.Error()))
 		}
 
 	} else { // 大文件，进行切片上传
@@ -62,11 +63,31 @@ func uploadFile(file *multipart.FileHeader, c *gin.Context) {
 		//断点续传
 		err = object.BreakPointTrans(dst)
 		if err != nil {
-			return
+			c.JSON(http.StatusInternalServerError, object.FailMsg(err.Error()))
 		}
 	}
 
 	if err != nil {
 		log.Printf("上传%s文件失败", file.Filename)
+		c.JSON(http.StatusInternalServerError, object.FailMsg(err.Error()))
 	}
+
+	//将文件存入数据库
+	detail := c.PostForm("detail")
+
+	m := new(object.FileInfoProperty)
+
+	m.UserId = 1
+	m.UserName = "超级管理员"
+	m.Detail = detail
+	m.FilePath = file.Filename
+
+	res, err := object.CreateFileInfo(*m)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, object.FailMsg(err.Error()))
+	} else {
+		c.JSON(http.StatusOK, res)
+	}
+
 }
