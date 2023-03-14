@@ -23,11 +23,10 @@ func FailMsg(msg string) *ResponseMsg {
 	return msgObj
 }
 
-func FailCodeMsg(code int, msg string, resultMap interface{}) *ResponseMsg {
+func FailCodeMsg(code int, msg string) *ResponseMsg {
 	msgObj := &ResponseMsg{
 		Code: code,
 		Msg:  msg,
-		Data: resultMap,
 	}
 	return msgObj
 }

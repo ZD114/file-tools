@@ -17,6 +17,7 @@ func InitRouter() *gin.Engine {
 	group := server.Group("/file-tools")
 	{
 		group.POST("/upload", controller.UploadFiles)
+		group.POST("/search", controller.SearchPage)
 	}
 
 	return server
