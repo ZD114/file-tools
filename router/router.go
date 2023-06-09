@@ -18,6 +18,9 @@ func InitRouter() *gin.Engine {
 	{
 		group.POST("/upload", controller.UploadFiles)
 		group.POST("/search", controller.SearchPage)
+
+		group.POST("/image/base64", controller.FileChangeBase64)
+		group.POST("/image/file", controller.Base64ChangeFile)
 	}
 
 	return server

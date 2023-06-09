@@ -49,6 +49,8 @@ func uploadFile(file *multipart.FileHeader, c *gin.Context) {
 		err = c.SaveUploadedFile(file, dst)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, object.FailMsg(err.Error()))
+
+			return
 		}
 
 	} else { // 大文件，进行切片上传
@@ -64,12 +66,16 @@ func uploadFile(file *multipart.FileHeader, c *gin.Context) {
 		err = object.BreakPointTrans(dst)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, object.FailMsg(err.Error()))
+
+			return
 		}
 	}
 
 	if err != nil {
 		log.Printf("上传%s文件失败", file.Filename)
 		c.JSON(http.StatusInternalServerError, object.FailMsg(err.Error()))
+
+		return
 	}
 
 	//将文件存入数据库
